@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { fetchTodos, deleteTodo, toggleTodo, editTodo } from '../redux/actions/todoActions';
-import { List, ListItem, ListItemText, IconButton, Checkbox, TextField, Typography, Box } from '@mui/material';
+import { ListItem, ListItemText, IconButton, Checkbox, TextField, Typography, Box } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
@@ -61,7 +61,7 @@ const Todo = () => {
   const pendingTodos = totalTodos - completedTodos;
 
   return (
-    <div style={{ maxWidth: '600px', margin: '0 auto' }}>
+    <div style={{ maxWidth: '900px', margin: '0 auto' }}>
       {/* Counts Display */}
       <Box
         sx={{
@@ -82,32 +82,25 @@ const Todo = () => {
         </Typography>
       </Box>
 
-      <List
-        style={{
-          maxHeight: '500px',
-          overflowY: 'auto',
-          margin: '0 auto',
-          padding: '0',
-          scrollbarWidth: 'none',
-          msOverflowStyle: 'none',
-          border: '1px',
-          borderRadius: '8px',
-          backgroundColor: darkMode ? '' :'',
+      {/* Todo List Displayed in Card Grid */}
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)', // 3 columns in a row
+          gap: '20px',
         }}
-        className="ListContainer"
       >
         {todos.map((todo) => (
           <ListItem
             key={todo.id}
             style={{
               display: 'flex',
+              flexDirection: 'column',
               justifyContent: 'space-between',
               alignItems: 'center',
-              marginBottom: '10px',
-              padding: '10px',
+              padding: '20px',
               boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
               borderRadius: '8px',
-              gap: '10px',
               position: 'relative',
               border: `1px solid ${darkMode ? '#fff' : '#000'}`,
               backgroundColor: darkMode ? '#444' : '#fff',
@@ -125,7 +118,7 @@ const Todo = () => {
                 />
                 <IconButton
                   onClick={() => handleSave(todo.id)}
-                  style={{ marginLeft: '10px', color: darkMode ? '#fff' : '#000' }}
+                  style={{ marginTop: '10px', color: darkMode ? '#fff' : '#000' }}
                 >
                   <SaveIcon />
                 </IconButton>
@@ -145,7 +138,7 @@ const Todo = () => {
                     secondaryTypographyProps={{ style: { color: darkMode ? '#ccc' : '#555' } }}
                   />
                 </div>
-                <div style={{ display: 'flex' }}>
+                <div style={{ display: 'flex', marginTop: '10px' }}>
                   <IconButton
                     onClick={() => handleTextToSpeech(todo.todo)} // Add text-to-speech functionality
                     style={{ marginLeft: '10px', color: darkMode ? '#fff' : '#000' }}
@@ -172,7 +165,7 @@ const Todo = () => {
             )}
           </ListItem>
         ))}
-      </List>
+      </Box>
     </div>
   );
 };
