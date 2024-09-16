@@ -6,6 +6,7 @@ import { List, ListItem, ListItemText, IconButton, Checkbox, TextField, Typograp
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
+import VolumeUpIcon from '@mui/icons-material/VolumeUp'; // Import VolumeUpIcon
 import { toast } from 'react-toastify';
 
 const Todo = () => {
@@ -27,8 +28,11 @@ const Todo = () => {
   }, [dispatch]);
 
   const handleDelete = (id) => {
-    dispatch(deleteTodo(id));
-    toast.success('Todo Deleted');
+    const confirmDelete = window.confirm('Are you sure you want to delete this todo?');
+    if (confirmDelete) {
+      dispatch(deleteTodo(id));
+      toast.success('Todo Deleted');
+    }
   };
 
   const handleToggle = (id) => {
@@ -44,6 +48,11 @@ const Todo = () => {
     dispatch(editTodo(id, editText)); // Dispatch the updated todo
     setEditMode(null); // Exit edit mode after saving
     setEditText(''); // Clear the input field
+  };
+
+  const handleTextToSpeech = (text) => {
+    const utterance = new SpeechSynthesisUtterance(text);
+    speechSynthesis.speak(utterance);
   };
 
   // Calculate counts
@@ -138,6 +147,12 @@ const Todo = () => {
                 </div>
                 <div style={{ display: 'flex' }}>
                   <IconButton
+                    onClick={() => handleTextToSpeech(todo.todo)} // Add text-to-speech functionality
+                    style={{ marginLeft: '10px', color: darkMode ? '#fff' : '#000' }}
+                  >
+                    <VolumeUpIcon />
+                  </IconButton>
+                  <IconButton
                     onClick={() => handleEdit(todo)}
                     disabled={todo.completed}
                     style={{ marginLeft: '10px', color: darkMode ? '#fff' : '#000' }}
@@ -163,4 +178,3 @@ const Todo = () => {
 };
 
 export default Todo;
-
